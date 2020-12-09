@@ -1,0 +1,169 @@
+package pkg;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+import java.lang.*;
+import java.io.File;
+
+
+public class Mainly extends JFrame{
+
+	Mainly() {
+		new controlTheGame(this);
+	}
+	
+	public static class job {
+		private static int count = 0;
+		private static int[] order = new int[16];
+		public static final int times = 10;
+		
+		private static TreeSet<Integer> tset1 = new TreeSet<>();
+		private static TreeSet<Integer> tset2 = new TreeSet<>();
+		
+		public static void clear() {
+			tset1.clear();
+			tset2.clear();
+		}
+		
+		public static void find16Ram() {
+			
+			int add = (int)(Math.random()*8);
+			if(!tset1.add(add)) {
+				if(!tset2.add(add)) {
+					find16Ram();
+					return;
+				}
+			}
+			order[count]=add;
+			count++;
+		}
+		
+		public static String pathGenerater(String f,int i) {
+			return System.getProperty("user.dir")+"\\bin\\pkg\\"+f+"\\"+i+".png";
+		}
+		
+		
+		public static void go(int Times ,String level) {
+			
+			Thread t = new Thread(()->{
+				
+				job.clear();
+				//*/$$$$$$$$$$$史上最重要的一行↑
+				count=0;
+				for (int j = 0; j < 16; j++) {
+					find16Ram();
+					
+					controlTheGame.bts[j].setIcon
+					(new ImageIcon(pathGenerater(level, order[j]))); 
+					controlTheGame.bts[j].setBackground(null);
+				}
+				
+				});
+			
+			t.start();
+			
+			
+			controlTheGame.menu.enable(false);
+			controlTheGame.Mb.enable(false);
+			controlTheGame.bt.enable(false);
+			controlTheGame.bt.setIcon(new ImageIcon(pathGenerater("else",1)));
+		}
+	}
+	
+	public static class controlTheGame{
+		
+		private static JButton[] bts = new JButton[16];
+		private static JButton bt;
+		private static JPanel p;
+		private static JMenuBar Mb;
+		private static JMenu menu;
+		private static JMenuItem degree[] = new JMenuItem[3];
+		private static String degreeClass[] = new String[] {"easy", "medium", "hard"};
+		private static JLabel LB;
+		
+		private static boolean canStart = false;
+		
+		controlTheGame(Mainly TheGame){
+			TheGame.setLayout(null);
+			TheGame.setTitle("THIS");
+			TheGame.setSize(415, 600);
+			TheGame.setLocation(180, 50);
+			
+
+			
+
+			p = new JPanel();
+			
+			for (int i = 0; i < 16; i++) {
+				bts[i] = new JButton();
+				bts[i].setBackground(Color.darkGray);
+				p.add(bts[i]);
+			}
+			
+			p.setLayout((new GridLayout(0, 4)));
+			p.setBounds(0, 150, 400, 400);
+			TheGame.add(p);
+
+			
+			bt = new JButton();
+			bt.setBounds(200, 30, 167, 60);
+			bt.setIcon(new ImageIcon(job.pathGenerater("else",1)));
+			bt.addActionListener((e)->{////////////////////////
+				if(canStart) {
+					job.go(job.times, LB.getText());
+					canStart=false;
+				}
+				
+			});
+			TheGame.add(bt);
+
+			
+			LB = new JLabel("Please Choose a level");
+			LB.setBounds(10,-80,100,300);
+			LB.setFont(new Font("微軟中黑體",Font.PLAIN,27));
+			TheGame.add(LB);
+			
+			Mb = new JMenuBar();
+			menu = new JMenu("degree");
+			for (int i=0; i<3; i++) {
+				menu.addSeparator();
+				degree[i] = new JMenuItem(degreeClass[i]);
+				menu.add(degree[i]);
+				degree[i].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						LB.setText(((JMenuItem)e.getSource()).getText());
+						bt.setIcon(new ImageIcon(job.pathGenerater("else",0)));
+						canStart=true;
+					}
+				});
+			}
+			Mb.add(menu);
+			TheGame.setJMenuBar(Mb);
+			
+			
+			
+
+			//this.setIconImage(image);
+			//////////-------------this.setMaximumSize(new Dimension(416,601));
+			TheGame.setMinimumSize(new Dimension(415,600));
+			TheGame.setVisible(true);
+			
+		}
+	}
+	
+	
+
+	public static void main(String[] args) {
+		new Mainly();
+//		System.out.println(game2.class.getResource("")); 
+//		System.out.println(game2.class.getResource("/")); //Class檔案所在路徑 
+//		System.out.println(new File("/").getAbsolutePath()); 
+//		System.out.println(System.getProperty("user.dir")); 
+//		System.out.println(File.separator); 
+
+	}
+
+}
+//<a href='htttps://.pngtree.com/so/紅色'>紅色 png來自 pngtree.com</a>
