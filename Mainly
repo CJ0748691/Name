@@ -37,6 +37,8 @@ public class Mainly extends JFrame{
 
 
 		controlTheGame(Mainly TheGame){
+			TheGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
 			TheGame.setLayout(null);//這是主要畫面
 			TheGame.setTitle("THIS");
 			TheGame.setSize(415, 600);
@@ -218,9 +220,9 @@ public class Mainly extends JFrame{
 					final int jj = j;			//技術性問題，要兩次轉成區域變數
 					ctrl.bts[jj].addActionListener(new ActionListener() {
 						final int jjj = jj;		//技術性問題，要兩次轉成區域變數
-						public void actionPerformed(ActionEvent e) {
+						public void actionPerformed(ActionEvent e) {							
+							Image(ctrl,jjj,level);//點擊的回饋，顯示圖片(技術性問題:第二次會沒圖片)
 							if(source!=jjj) {//是否作弊，點同一按鈕?
-								Image(ctrl,jjj,level);//點擊的回饋，顯示圖片
 
 								if(match.add(order[jjj])) {//用目前點擊的按鈕驗證 被配對的牌
 									//集合能add表示還沒有相同數字
